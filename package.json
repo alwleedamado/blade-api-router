@@ -2,14 +2,63 @@
   "name": "blade-api-router",
   "version": "1.0.0",
   "description": "Api gateway that routes incoming request to the requested microservice",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "author": "Alwaleed Ahmed",
   "license": "MIT",
-  "private": true,
+  "private": false,
   "repository": {
     "url": "https://github.com/alwleedamado/blade-api-router.git",
     "type": "git",
     "directory": "."
+  },
+  "nodemonConfig": {
+    "watch": [
+      "src"
+    ],
+    "ext": "ts",
+    "ignore": [
+      "src/public"
+    ],
+    "exec": "./node_modules/.bin/ts-node -r tsconfig-paths/register ./src"
+  },
+  "scripts": {
+    "build": "./node_modules/.bin/ts-node build.ts",
+    "lint": "eslint . --ext .ts",
+    "start": "node -r module-alias/register ./dist --env=production",
+    "start:dev": "nodemon",
+    "test": "nodemon --config ./spec/nodemon.json",
+    "test:no-reloading": "./node_modules/.bin/ts-node -r tsconfig-paths/register ./spec"
+  },
+  "eslintConfig": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:@typescript-eslint/recommended-requiring-type-checking"
+    ],
+    "parserOptions": {
+      "project": "./tsconfig.json"
+    },
+    "rules": {
+      "max-len": [
+        "error",
+        {
+          "code": 100
+        }
+      ],
+      "no-console": 1,
+      "no-extra-boolean-cast": 0,
+      "@typescript-eslint/restrict-plus-operands": 0,
+      "@typescript-eslint/explicit-module-boundary-types": 0,
+      "@typescript-eslint/no-explicit-any": 0,
+      "@typescript-eslint/no-floating-promises": 0,
+      "@typescript-eslint/no-unsafe-member-access": 0,
+      "@typescript-eslint/no-unsafe-assignment": 0
+    }
   },
   "devDependencies": {
     "@types/command-line-args": "^5.2.0",
@@ -17,6 +66,7 @@
     "@types/node": "^17.0.25",
     "@types/node-fetch": "^2.6.1",
     "@types/supertest": "^2.0.12",
+    "@typescript-eslint/parser": "^5.20.0",
     "eslint": "^8.13.0",
     "jasmine": "^4.1.0",
     "nodemon": "^2.0.15",
@@ -27,6 +77,7 @@
   },
   "dependencies": {
     "command-line-args": "^5.2.1",
+    "fs-extra": "^10.1.0",
     "helmet": "^5.0.2",
     "http-status-codes": "^2.2.0",
     "jet-logger": "^1.1.5",
